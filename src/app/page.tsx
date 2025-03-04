@@ -3,8 +3,38 @@ import { PenLine, Download, Share2 } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import './globals.css'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import MacchiatoTemplate from '../components/templates/MacchiatoTemplate'
+import OnePagePlusTemplate from '../components/templates/OnePagePlusTemplate'
+import RickOsborneTemplate from '../components/templates/RickOsborneTemplate'
+import { sampleResumeData } from '../mockData'
 
 export default function Home() {
+  const router = useRouter()
+  const resumeTemplates = [
+    {
+      id: 'macchiato',
+      name: 'Macchiato',
+      sampleComponent: (
+        <MacchiatoTemplate data={sampleResumeData} disableLinks />
+      ),
+    },
+    {
+      id: 'one-page-plus',
+      name: 'One Page Plus',
+      sampleComponent: (
+        <OnePagePlusTemplate data={sampleResumeData} disableLinks />
+      ),
+    },
+    {
+      id: 'rickosborne',
+      name: 'RickOsborne',
+      sampleComponent: (
+        <RickOsborneTemplate data={sampleResumeData} disableLinks />
+      ),
+    },
+  ]
+
   return (
     <>
       <section className="py-20 px-4">
@@ -68,20 +98,53 @@ export default function Home() {
             Professional Templates
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((template) => (
-              <div
-                key={template}
-                className="bg-card rounded-lg overflow-hidden shadow-lg"
-              >
-                <div className="aspect-[3/4] bg-accent"></div>
-                <div className="p-4">
-                  <h3 className="font-semibold mb-2">Template {template}</h3>
-                  <Button variant="outline" className="w-full">
-                    Use Template
-                  </Button>
+            {resumeTemplates.map((template) => {
+              const previewWidth = 400
+              const baseWidth = 700
+              const scaleFactor = previewWidth / baseWidth
+              const previewHeight = Math.round(1000 * scaleFactor)
+
+              return (
+                <div
+                  key={template.id}
+                  className={`cursor-pointer rounded-lg overflow-hidden border-2 transition-all`}
+                  onClick={() =>
+                    // Pass query parameters as a string with next/navigation's useRouter
+                    router.push(`/resume?templateId=${template.id}`)
+                  }
+                >
+                  <div className="aspect-[3/4] bg-accent">
+                    <div
+                      className="relative overflow-hidden"
+                      style={{
+                        width: `${previewWidth}px`,
+                        height: `${previewHeight}px`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: `${baseWidth}px`,
+                          height: '1000px',
+                          transform: `scale(${scaleFactor})`,
+                          transformOrigin: 'top left',
+                        }}
+                      >
+                        {
+                          resumeTemplates.find((t) => t.id === template.id)
+                            ?.sampleComponent
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold mb-2">{template.name}</h3>
+                    <Button variant="outline" className="w-full">
+                      Use Template
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>

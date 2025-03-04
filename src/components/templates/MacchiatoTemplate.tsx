@@ -15,9 +15,10 @@ import Image from 'next/image'
 
 interface MacchiatoTemplateProps {
   data: ProfileData
+  disableLinks?: boolean
 }
 
-const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
+const MacchiatoTemplate = ({ data, disableLinks }: MacchiatoTemplateProps) => {
   return (
     <div className="bg-white w-[700px] min-h-[297mm] p-6">
       <div className="mb-4">
@@ -54,7 +55,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
               </span>
             </p>
             <a
-              href={`mailto:${data.basics.email}`}
+              href={disableLinks ? undefined : `mailto:${data.basics.email}`}
+              onClick={(e) => {
+                if (disableLinks) {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }
+              }}
               className="flex flex-row text-xs items-center gap-1 text-[#00a6ed] hover:text-[#0086c3] "
             >
               <Mail size="14px" />
@@ -78,7 +85,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
               </h5>
               {data.basics.url && (
                 <a
-                  href={data.basics.url}
+                  href={disableLinks ? undefined : data.basics.url}
+                  onClick={(e) => {
+                    if (disableLinks) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
                   className="flex flex-row text-xs items-center gap-1 text-[#00a6ed] hover:text-[#0086c3] "
                 >
                   <Earth size="14px" />
@@ -89,7 +102,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
               )}
               {data.basics.twitter && (
                 <a
-                  href={data.basics.twitter}
+                  href={disableLinks ? undefined : data.basics.twitter}
+                  onClick={(e) => {
+                    if (disableLinks) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-row text-xs items-center gap-1 text-[#00a6ed] hover:text-[#0086c3]"
@@ -102,7 +121,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
               )}
               {data.basics.github && (
                 <a
-                  href={data.basics.github}
+                  href={disableLinks ? undefined : data.basics.github}
+                  onClick={(e) => {
+                    if (disableLinks) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-row text-xs items-center gap-1 text-[#00a6ed] hover:text-[#0086c3]"
@@ -115,7 +140,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
               )}
               {data.basics.linkedin && (
                 <a
-                  href={data.basics.linkedin}
+                  href={disableLinks ? undefined : data.basics.linkedin}
+                  onClick={(e) => {
+                    if (disableLinks) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-row text-sm items-center gap-1 text-[#00a6ed] hover:text-[#0086c3]"
@@ -140,7 +171,7 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
                   {skillGroup.keywords.map((keyword, i) => (
                     <Badge
                       key={i}
-                      className="px-1 text-[10px] bg-[#e1ebfc] text-[#2b2b2b] font-normal hover:bg-[#4d4d4d] border-none"
+                      className="px-1 text-[10px] bg-[#e1ebfc] text-[#2b2b2b] font-normal border-none"
                     >
                       {keyword}
                     </Badge>
@@ -196,7 +227,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
                       <span className="text-[#00a6ed] text-sm">
                         {work.url ? (
                           <a
-                            href={work.url}
+                            href={disableLinks ? undefined : work.url}
+                            onClick={(e) => {
+                              if (disableLinks) {
+                                e.preventDefault()
+                                e.stopPropagation()
+                              }
+                            }}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-[#0086c3]"
@@ -238,7 +275,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
                     <h3 className="text-[#c5c5c5] text-sm">
                       {project.url ? (
                         <a
-                          href={project.url}
+                          href={disableLinks ? undefined : project.url}
+                          onClick={(e) => {
+                            if (disableLinks) {
+                              e.preventDefault()
+                              e.stopPropagation()
+                            }
+                          }}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[#00a6ed] hover:text-[#0086c3]"
@@ -257,7 +300,7 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
                         <Badge
                           key={i}
                           variant="outline"
-                          className="text-[10px] px-1 bg-[#e1ebfc] text-[#2b2b2b] font-normal hover:bg-[#4d4d4d] border-none"
+                          className="text-[10px] px-1 bg-[#e1ebfc] text-[#2b2b2b] font-normal border-none"
                         >
                           {keyword}
                         </Badge>
@@ -290,7 +333,13 @@ const MacchiatoTemplate = ({ data }: MacchiatoTemplateProps) => {
                         <span className="text-[#00a6ed] text-sm">
                           {edu.url ? (
                             <a
-                              href={edu.url}
+                              href={disableLinks ? undefined : edu.url}
+                              onClick={(e) => {
+                                if (disableLinks) {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                }
+                              }}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="hover:text-[#0086c3]"

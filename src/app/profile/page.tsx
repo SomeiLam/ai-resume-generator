@@ -8,19 +8,22 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/src/components/ui/Tabs'
-import { Button, Card, Input, Label, Textarea } from '@/src/components/ui'
+import {
+  Button,
+  Card,
+  Input,
+  Label,
+  Spinner,
+  Textarea,
+} from '@/src/components/ui'
 import { ProfileData } from '@/src/types/profile' // ProfileData is same as profileData now
 import { ImageIcon, Plus, Save, Trash2, Upload, User } from 'lucide-react'
-import Link from 'next/link'
-import {
-  uploadImageToFirebase,
-  deleteImageFromFirebase,
-} from '@/src/lib/firebaseStorage'
+import { uploadImageToFirebase } from '@/src/lib/firebaseStorage'
 import { useRouter } from 'next/navigation'
 import { fetchProfile, saveProfile } from '@/src/lib/firebaseFirestore'
 import useAuthUser from '@/src/hooks/useAuthUser'
-import { profile } from 'console'
 import Image from 'next/image'
+// import { getLinkedInAuthUrl } from '@/src/hooks/useLinkedInProfile'
 // A default profile (empty or with initial values) based on your type
 const defaultProfile: ProfileData = {
   basics: {
@@ -114,10 +117,6 @@ const Profile: React.FC = () => {
     const file = e.target.files[0]
     setUploading(true)
     try {
-      // Delete previous image if it exists
-      if (profileData.basics.image) {
-        await deleteImageFromFirebase(profileData.basics.image)
-      }
       // Upload new image to Firebase Storage
       const uploadedUrl = await uploadImageToFirebase(file, user.uid)
       // Update the profile's image URL in state
@@ -179,8 +178,14 @@ const Profile: React.FC = () => {
     }
   }
 
-  if (loading) return <div>Loading...</div>
-  console.log(profileData)
+  // const handleLinkedInLogin = () => {
+  //   const authUrl = getLinkedInAuthUrl()
+  //   // Redirect the user to LinkedIn's authorization URL
+  //   window.location.href = authUrl
+  // }
+
+  if (loading) return <Spinner />
+
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="container mx-auto px-4 py-8">
@@ -190,11 +195,13 @@ const Profile: React.FC = () => {
             <h1 className="text-3xl font-bold">Profile</h1>
             <p className="text-gray-600">Complete your professional profile</p>
           </div>
-
-          <Button onClick={handleSaveProfile} disabled={loading}>
-            <Save className="mr-2 h-4 w-4" />
-            Save
-          </Button>
+          <div className="flex flex-row gap-2">
+            {/* <Button onClick={handleLinkedInLogin}>LinkedIn</Button> */}
+            <Button onClick={handleSaveProfile} disabled={loading}>
+              <Save className="mr-2 h-4 w-4" />
+              Save
+            </Button>
+          </div>
         </div>
         {error && <div className="mb-4 text-center text-red-500">{error}</div>}
         {/* Tabs Container */}
@@ -403,6 +410,8 @@ const Profile: React.FC = () => {
                       id="summary"
                       placeholder="A brief overview of your experience..."
                       rows={7}
+                      onChange={(e) => updateBasics('summary', e.target.value)}
+                      value={profileData.basics.summary}
                     />
                   </div>
                 </div>
@@ -1039,40 +1048,43 @@ const Profile: React.FC = () => {
                       <div>
                         <div className="py-1">
                           <Label>Highlights</Label>
-                          {project.highlights.map((highlight, hIdx) => (
-                            <div key={hIdx} className="flex gap-2">
-                              <Input
-                                value={highlight}
-                                onChange={(e) => {
-                                  const updated = [
-                                    ...(profileData.projects ?? []),
-                                  ]
-                                  updated[idx].highlights[hIdx] = e.target.value
-                                  setProfileData({
-                                    ...profileData,
-                                    projects: updated,
-                                  })
-                                }}
-                                placeholder="e.g. Implemented secure user authentication"
-                              />
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                onClick={() => {
-                                  const updated = [
-                                    ...(profileData.projects ?? []),
-                                  ]
-                                  updated[idx].highlights.splice(hIdx, 1)
-                                  setProfileData({
-                                    ...profileData,
-                                    projects: updated,
-                                  })
-                                }}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          ))}
+                          <div className="flex flex-col gap-2">
+                            {project.highlights.map((highlight, hIdx) => (
+                              <div key={hIdx} className="flex gap-2">
+                                <Input
+                                  value={highlight}
+                                  onChange={(e) => {
+                                    const updated = [
+                                      ...(profileData.projects ?? []),
+                                    ]
+                                    updated[idx].highlights[hIdx] =
+                                      e.target.value
+                                    setProfileData({
+                                      ...profileData,
+                                      projects: updated,
+                                    })
+                                  }}
+                                  placeholder="e.g. Implemented secure user authentication"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="destructive"
+                                  onClick={() => {
+                                    const updated = [
+                                      ...(profileData.projects ?? []),
+                                    ]
+                                    updated[idx].highlights.splice(hIdx, 1)
+                                    setProfileData({
+                                      ...profileData,
+                                      projects: updated,
+                                    })
+                                  }}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                         <Button
                           type="button"
@@ -1103,6 +1115,7 @@ const Profile: React.FC = () => {
                             updated[idx].keywords = e.target.value
                               .split(',')
                               .map((kw) => kw.trim())
+                              .filter((kw) => kw.length > 0)
                             setProfileData({
                               ...profileData,
                               projects: updated,

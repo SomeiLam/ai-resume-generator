@@ -5,9 +5,10 @@ import Image from 'next/image'
 
 type ResumeProps = {
   data: ProfileData
+  disableLinks?: boolean
 }
 
-const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
+const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data, disableLinks }) => {
   return (
     <div className="bg-white text-gray-800 min-h-[297mm] w-full p-8 font-sans">
       {/* Header */}
@@ -20,7 +21,13 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
           <div className="flex flex-wrap justify-center gap-3 text-xs text-gray-600 mb-1 divide-x divide-gray-300">
             {data.basics.email && (
               <a
-                href={`mailto:${data.basics.email}`}
+                href={disableLinks ? undefined : `mailto:${data.basics.email}`}
+                onClick={(e) => {
+                  if (disableLinks) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }
+                }}
                 className="text-blue-600 hover:underline"
               >
                 {data.basics.email}
@@ -34,7 +41,13 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
             )}
             {data.basics.url && (
               <a
-                href={data.basics.url}
+                href={disableLinks ? undefined : data.basics.url}
+                onClick={(e) => {
+                  if (disableLinks) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                  }
+                }}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="pl-2 text-blue-600 hover:underline"
@@ -44,12 +57,18 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
             )}
           </div>
 
-          <div className="flex flex-wrap justify-center gap-3 text-xs">
+          <div className="flex flex-wrap justify-start gap-x-3 gap-y-1 text-xs">
             {data.basics.linkedin && (
               <div className="flex flex-row items-center gap-1">
                 LinkedIn:
                 <a
-                  href={data.basics.linkedin}
+                  href={disableLinks ? undefined : data.basics.linkedin}
+                  onClick={(e) => {
+                    if (disableLinks) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
@@ -62,7 +81,13 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
               <div className="flex flex-row items-center gap-1">
                 Twitter:
                 <a
-                  href={data.basics.twitter}
+                  href={disableLinks ? undefined : data.basics.twitter}
+                  onClick={(e) => {
+                    if (disableLinks) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
@@ -75,7 +100,13 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
               <div className="flex flex-row items-center gap-1">
                 Github:
                 <a
-                  href={data.basics.github}
+                  href={disableLinks ? undefined : data.basics.github}
+                  onClick={(e) => {
+                    if (disableLinks) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
@@ -117,10 +148,7 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
           <h2 className="text-sm text-gray-900 mb-2 uppercase">Skills</h2>
           <div className="space-y-2 col-span-6">
             {data.skills.map((skillGroup, index) => (
-              <div
-                key={index}
-                className="mb-2 flex flex-row items-center gap-2"
-              >
+              <div key={index} className="mb-2 flex flex-row items-start gap-2">
                 <h3 className="font-semibold text-gray-800 text-xs">
                   {skillGroup.name}:
                 </h3>
@@ -146,7 +174,13 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
                     <div className="text-gray-700 text-xs pl-2">
                       {work.url ? (
                         <a
-                          href={work.url}
+                          href={disableLinks ? undefined : work.url}
+                          onClick={(e) => {
+                            if (disableLinks) {
+                              e.preventDefault()
+                              e.stopPropagation()
+                            }
+                          }}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:underline"
@@ -189,7 +223,13 @@ const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data }) => {
                 <h3 className="font-semibold text-gray-900 text-xs">
                   {project.url ? (
                     <a
-                      href={project.url}
+                      href={disableLinks ? undefined : project.url}
+                      onClick={(e) => {
+                        if (disableLinks) {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }
+                      }}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:underline"

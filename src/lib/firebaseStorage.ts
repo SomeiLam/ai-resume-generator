@@ -11,7 +11,7 @@ export async function uploadImageToFirebase(
   file: File,
   userId: string
 ): Promise<string> {
-  const storageRef = ref(storage, `profile/${userId}/${file.name}`)
+  const storageRef = ref(storage, `profile/${userId}`)
   await uploadBytes(storageRef, file)
   return await getDownloadURL(storageRef)
 }

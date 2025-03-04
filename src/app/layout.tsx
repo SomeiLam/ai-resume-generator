@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from './providers'
 import Appbar from '../components/Appbar'
 import Footer from '../components/Footer'
+import ScrollToTop from '../components/ScrollToTop'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <>
+            <ScrollToTop />
             <Appbar />
             <main className="min-h-screen bg-background">{children}</main>
             <Footer />

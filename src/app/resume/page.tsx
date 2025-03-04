@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { User as UserType } from 'firebase/auth'
 import {
   Tabs,
   TabsContent,
@@ -14,19 +15,29 @@ import Link from 'next/link'
 import { Input } from '@/src/components/ui/Input'
 import CoverLetterTab from '@/src/components/Resume/CoverLetterTab'
 import ResumeForm from '@/src/components/Resume/ResumeForm'
-import { ResumeData } from '@/src/types/profile'
+import { ProfileData } from '@/src/types/profile'
 import MacchiatoTemplate from '@/src/components/templates/MacchiatoTemplate'
 import OnePagePlusTemplate from '@/src/components/templates/OnePagePlusTemplate'
 import { sampleResumeData } from '@/src/mockData'
 import RickOsborneTemplate from '@/src/components/templates/RickOsborneTemplate'
+import useAuthUser from '@/src/hooks/useAuthUser'
+import { fetchProfile } from '@/src/lib/firebaseFirestore'
+import { Spinner } from '@/src/components/ui'
+import { useSearchParams } from 'next/navigation'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import OnePagePlusDocument from '@/src/components/Resume/OnePagePlusDocument'
 
 export default function Resume() {
+  const user = useAuthUser()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [resumeName, setResumeName] = useState('My Resume')
-  const [resumeData, setResumeData] = useState<ResumeData>(sampleResumeData)
+  const [resumeData, setResumeData] = useState<ProfileData>(sampleResumeData)
 
   const [showRight, setShowRight] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
+  const printRef = useRef<HTMLDivElement>(null)
 
   const toggleRight = () => setShowRight(!showRight)
 
@@ -35,21 +46,50 @@ export default function Resume() {
       id: 'macchiato',
       name: 'Macchiato',
       component: <MacchiatoTemplate data={resumeData} />,
+      sampleComponent: <MacchiatoTemplate data={resumeData} disableLinks />,
     },
     {
       id: 'one-page-plus',
       name: 'One Page Plus',
       component: <OnePagePlusTemplate data={resumeData} />,
+      sampleComponent: <OnePagePlusTemplate data={resumeData} disableLinks />,
     },
     {
       id: 'rickosborne',
       name: 'RickOsborne',
       component: <RickOsborneTemplate data={resumeData} />,
+      sampleComponent: <RickOsborneTemplate data={resumeData} disableLinks />,
     },
   ]
+
+  const searchParams = useSearchParams()
+  const templateId = searchParams.get('templateId')
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
-    resumeTemplates[0].id
+    templateId || resumeTemplates[0].id
   )
+
+  useEffect(() => {
+    // Early return if user is null or undefined
+    if (!user) return
+
+    // Define an async function that takes user as a parameter
+    async function loadProfile(currentUser: UserType) {
+      try {
+        const data = await fetchProfile(currentUser.uid)
+        if (data) {
+          setResumeData(data as ProfileData)
+        }
+      } catch (err) {
+        console.error('Error fetching profile:', err)
+        setError('Failed to load profile')
+      } finally {
+        setLoading(false)
+      }
+    }
+    setLoading(true)
+    // Call the function with the current user
+    loadProfile(user)
+  }, [user])
 
   useEffect(() => {
     function handleResize() {
@@ -68,6 +108,8 @@ export default function Resume() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  if (loading) return <Spinner />
 
   return (
     <div className="min-h-screen bg-background">
@@ -88,10 +130,17 @@ export default function Resume() {
               <Save className="mr-2 h-4 w-4" />
               Save
             </Button>
-            <Button>
-              <Download className="mr-2 h-4 w-4" />
-              Export
-            </Button>
+            {selectedTemplate === 'one-page-plus' && (
+              <Button>
+                <Download className="mr-2 h-4 w-4" />
+                <PDFDownloadLink
+                  document={<OnePagePlusDocument data={resumeData} />}
+                  fileName="profile.pdf"
+                >
+                  {({ loading }) => (loading ? 'Loading...' : 'Download PDF')}
+                </PDFDownloadLink>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -137,7 +186,7 @@ export default function Resume() {
                           className={`cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
                             selectedTemplate === template.id
                               ? 'border-primary ring-2 ring-primary ring-opacity-50'
-                              : 'border-transparent hover:border-gray-200'
+                              : 'border-transparent ring-1 hover:ring-2'
                           }`}
                           onClick={() => setSelectedTemplate(template.id)}
                         >
@@ -160,7 +209,7 @@ export default function Resume() {
                               {
                                 resumeTemplates.find(
                                   (t) => t.id === template.id
-                                )?.component
+                                )?.sampleComponent
                               }
                             </div>
                           </div>
@@ -204,6 +253,7 @@ export default function Resume() {
                         height: '1000px',
                         transform: `scale(${scale})`,
                       }}
+                      ref={printRef}
                     >
                       {
                         resumeTemplates.find((t) => t.id === selectedTemplate)

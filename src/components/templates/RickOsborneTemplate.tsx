@@ -15,9 +15,13 @@ import Image from 'next/image'
 
 interface RickOsborneTemplateProps {
   data: ProfileData
+  disableLinks?: boolean
 }
 
-const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
+const RickOsborneTemplate = ({
+  data,
+  disableLinks,
+}: RickOsborneTemplateProps) => {
   return (
     <div className="bg-white text-gray-800 min-h-[297mm] w-full p-6 font-sans">
       <div className="grid grid-cols-3 gap-6">
@@ -62,7 +66,13 @@ const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
                         <div className="text-xs text-gray-700">
                           {work.url ? (
                             <a
-                              href={work.url}
+                              href={disableLinks ? undefined : work.url}
+                              onClick={(e) => {
+                                if (disableLinks) {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                }
+                              }}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-blue-700 hover:underline"
@@ -111,7 +121,13 @@ const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
                     <h3 className="text-xs font-semibold text-gray-900">
                       {project.url ? (
                         <a
-                          href={project.url}
+                          href={disableLinks ? undefined : project.url}
+                          onClick={(e) => {
+                            if (disableLinks) {
+                              e.preventDefault()
+                              e.stopPropagation()
+                            }
+                          }}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-700 hover:underline"
@@ -217,7 +233,15 @@ const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
                 <div className="flex items-center">
                   <Mail className="w-3 h-3 mr-1 text-gray-600" />
                   <a
-                    href={`mailto:${data.basics.email}`}
+                    href={
+                      disableLinks ? undefined : `mailto:${data.basics.email}`
+                    }
+                    onClick={(e) => {
+                      if (disableLinks) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }
+                    }}
                     className="text-blue-700 hover:underline"
                   >
                     {data.basics.email}
@@ -234,7 +258,13 @@ const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
                 <div className="flex items-center">
                   <Globe className="w-3 h-3 mr-1 text-gray-600" />
                   <a
-                    href={data.basics.url}
+                    href={disableLinks ? undefined : data.basics.url}
+                    onClick={(e) => {
+                      if (disableLinks) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }
+                    }}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-700 hover:underline"
@@ -259,7 +289,13 @@ const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
                   <div className="flex items-center">
                     <Linkedin className="w-3 h-3 mr-1 text-gray-600" />
                     <a
-                      href={data.basics.linkedin}
+                      href={disableLinks ? undefined : data.basics.linkedin}
+                      onClick={(e) => {
+                        if (disableLinks) {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }
+                      }}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
@@ -272,7 +308,13 @@ const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
                   <div className="flex items-center">
                     <Twitter className="w-3 h-3 mr-1 text-gray-600" />
                     <a
-                      href={data.basics.twitter}
+                      href={disableLinks ? undefined : data.basics.twitter}
+                      onClick={(e) => {
+                        if (disableLinks) {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }
+                      }}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"
@@ -285,7 +327,13 @@ const RickOsborneTemplate = ({ data }: RickOsborneTemplateProps) => {
                   <div className="flex items-center">
                     <Github className="w-3 h-3 mr-1 text-gray-600" />
                     <a
-                      href={data.basics.github}
+                      href={disableLinks ? undefined : data.basics.github}
+                      onClick={(e) => {
+                        if (disableLinks) {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }
+                      }}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-700 hover:underline"

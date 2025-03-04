@@ -4,6 +4,7 @@ import { Card } from './Card'
 import { Input } from './Input'
 import { Label } from './Label'
 import { Separator } from './Separator'
+import { Spinner } from './Spinner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './Tabs'
 import { Textarea } from './Textarea'
 
@@ -14,6 +15,7 @@ export {
   Input,
   Label,
   Separator,
+  Spinner,
   Tabs,
   TabsList,
   TabsTrigger,
