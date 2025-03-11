@@ -20,6 +20,7 @@ export interface ProfileData {
       language: string
       fluency: string
     }>
+    additionalInformation?: string
   }
   work: Array<{
     name: string

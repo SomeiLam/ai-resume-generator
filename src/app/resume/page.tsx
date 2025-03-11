@@ -30,7 +30,7 @@ import OnePagePlusDocument from '@/src/components/Resume/OnePagePlusDocument'
 export default function Resume() {
   const user = useAuthUser()
   const [loading, setLoading] = useState(false)
-  const [resumeName, setResumeName] = useState('My Resume')
+  const [resumeName, setResumeName] = useState('someilam-resume')
   const [resumeData, setResumeData] = useState<ProfileData>(sampleResumeData)
 
   const [showRight, setShowRight] = useState(true)
@@ -134,7 +134,7 @@ export default function Resume() {
                 <Download className="mr-2 h-4 w-4" />
                 <PDFDownloadLink
                   document={<OnePagePlusDocument data={resumeData} />}
-                  fileName="profile.pdf"
+                  fileName={resumeName}
                 >
                   {({ loading }) => (loading ? 'Loading...' : 'Download PDF')}
                 </PDFDownloadLink>

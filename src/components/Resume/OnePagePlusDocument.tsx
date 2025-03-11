@@ -15,7 +15,8 @@ import { formatYearMonth, removeProtocal } from '@/src/lib/utils'
 // PDF Styles
 const styles = StyleSheet.create({
   page: {
-    padding: 32,
+    paddingHorizontal: 32,
+    paddingTop: 32,
     fontFamily: 'Helvetica',
     fontSize: 10,
     lineHeight: 1.4,
@@ -364,6 +365,12 @@ export default function OnePagePlusDocument({
                 </View>
               ))}
             </View>
+          </View>
+        )}
+
+        {data.basics.additionalInformation && (
+          <View style={styles.section}>
+            <Text style={styles.text}>{data.basics.additionalInformation}</Text>
           </View>
         )}
       </Page>

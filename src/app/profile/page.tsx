@@ -17,7 +17,15 @@ import {
   Textarea,
 } from '@/src/components/ui'
 import { ProfileData } from '@/src/types/profile' // ProfileData is same as profileData now
-import { ImageIcon, Plus, Save, Trash2, Upload, User } from 'lucide-react'
+import {
+  ArrowUp,
+  ImageIcon,
+  Plus,
+  Save,
+  Trash2,
+  Upload,
+  User,
+} from 'lucide-react'
 import { uploadImageToFirebase } from '@/src/lib/firebaseStorage'
 import { useRouter } from 'next/navigation'
 import { fetchProfile, saveProfile } from '@/src/lib/firebaseFirestore'
@@ -169,7 +177,7 @@ const Profile: React.FC = () => {
       setLoading(true)
       await saveProfile(user.uid, profileData)
       // Optionally, show a success message or route to dashboard
-      router.push('/dashboard')
+      router.push('/resume')
     } catch (err) {
       console.error('Error saving profile:', err)
       setError('Failed to save profile. Please try again.')
@@ -546,6 +554,24 @@ const Profile: React.FC = () => {
                     Add Language
                   </Button>
                 </div>
+              </div>
+
+              {/* Additional Information */}
+              <div className="mt-4">
+                <Label
+                  htmlFor="additionalInfo"
+                  className="mb-1 text-sm font-medium"
+                >
+                  Additional Information
+                </Label>
+                <Input
+                  id="additionalInfo"
+                  placeholder="The footer of the resume"
+                  onChange={(e) =>
+                    updateBasics('additionalInformation', e.target.value)
+                  }
+                  value={profileData.basics.additionalInformation}
+                />
               </div>
 
               {/* Navigation Buttons */}
@@ -1124,6 +1150,28 @@ const Profile: React.FC = () => {
                         />
                       </div>
                     </div>
+                    {/* Arrow Up Button */}
+                    <button
+                      type="button"
+                      className="absolute top-2 right-12 text-blue-500"
+                      onClick={() => {
+                        // Only allow move up if this is not the first project
+                        if (idx > 0) {
+                          const updated = [...(profileData.projects ?? [])]
+                          // Swap the current project with the previous one
+                          const temp = updated[idx - 1]
+                          updated[idx - 1] = updated[idx]
+                          updated[idx] = temp
+                          setProfileData({
+                            ...profileData,
+                            projects: updated,
+                          })
+                        }
+                      }}
+                      title="Move Up"
+                    >
+                      <ArrowUp className="w-4 h-4" />
+                    </button>
                     <button
                       type="button"
                       className="absolute top-2 right-2 text-red-500"
