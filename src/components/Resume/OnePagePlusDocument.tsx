@@ -145,7 +145,7 @@ export default function OnePagePlusDocument({
       </Text>
     )
   }
-  console.log(data.basics.image)
+
   if (data.basics.github) {
     socialItems.push(
       <Text key="github">
@@ -158,6 +158,23 @@ export default function OnePagePlusDocument({
           }}
         >
           <Text>{removeProtocal(data.basics.github)}</Text>
+        </PDFLink>
+      </Text>
+    )
+  }
+
+  if (data.basics.url) {
+    socialItems.push(
+      <Text key="portfolio">
+        Portfolio:{' '}
+        <PDFLink
+          src={data.basics.url}
+          style={{
+            color: '#00a6ed',
+            textDecoration: 'underline',
+          }}
+        >
+          <Text>{removeProtocal(data.basics.url)}</Text>
         </PDFLink>
       </Text>
     )
@@ -191,17 +208,6 @@ export default function OnePagePlusDocument({
                 {data.basics.phone ? data.basics.phone : ''}
                 {data.basics.phone && data.basics.location.city ? '  |  ' : ''}
                 {data.basics.location.city ? data.basics.location.city : ''}
-                {data.basics.url ? '  |  ' : ''}
-                {data.basics.url && (
-                  <PDFLink
-                    src={data.basics.url}
-                    style={{ color: '#00a6ed', textDecoration: 'underline' }}
-                  >
-                    <Text>
-                      {data.basics.url.replace(/^https?:\/\/(www\.)?/, '')}
-                    </Text>
-                  </PDFLink>
-                )}
               </Text>
             </View>
             {/* Social Line */}
@@ -341,7 +347,7 @@ export default function OnePagePlusDocument({
             </View>
             <View style={styles.sectionContentColumn}>
               {data.education.map((edu, index) => (
-                <View key={index} style={{ marginBottom: 8 }}>
+                <View key={index} style={{ marginBottom: 4 }}>
                   <View
                     style={{
                       flexDirection: 'row',
