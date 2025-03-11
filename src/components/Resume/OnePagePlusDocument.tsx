@@ -370,7 +370,9 @@ export default function OnePagePlusDocument({
 
         {data.basics.additionalInformation && (
           <View style={styles.section}>
-            <Text style={styles.text}>{data.basics.additionalInformation}</Text>
+            <Text style={styles.sectionHeader}>
+              {data.basics.additionalInformation}
+            </Text>
           </View>
         )}
       </Page>
