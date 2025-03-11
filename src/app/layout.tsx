@@ -5,6 +5,7 @@ import { ThemeProvider } from './providers'
 import Appbar from '../components/Appbar'
 import Footer from '../components/Footer'
 import ScrollToTop from '../components/ScrollToTop'
+import { Suspense } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,12 +24,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider>
-          <>
+          <Suspense>
             <ScrollToTop />
             <Appbar />
             <main className="min-h-screen bg-background">{children}</main>
             <Footer />
-          </>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>

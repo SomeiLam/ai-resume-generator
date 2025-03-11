@@ -26,14 +26,10 @@ import { Spinner } from '@/src/components/ui'
 import { useSearchParams } from 'next/navigation'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import OnePagePlusDocument from '@/src/components/Resume/OnePagePlusDocument'
-import { getBase64FromUrl } from '@/src/lib/utils'
-import { ref, getDownloadURL } from 'firebase/storage'
-import { storage } from '@/src/lib/firebase'
 
 export default function Resume() {
   const user = useAuthUser()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [resumeName, setResumeName] = useState('My Resume')
   const [resumeData, setResumeData] = useState<ProfileData>(sampleResumeData)
 
@@ -84,7 +80,7 @@ export default function Resume() {
         }
       } catch (err) {
         console.error('Error fetching profile:', err)
-        setError('Failed to load profile')
+        // setError('Failed to load profile')
       } finally {
         setLoading(false)
       }
