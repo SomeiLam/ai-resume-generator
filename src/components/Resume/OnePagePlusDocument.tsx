@@ -6,7 +6,6 @@ import {
   Page,
   Text,
   View,
-  Image,
   StyleSheet,
   Link as PDFLink,
 } from '@react-pdf/renderer'
@@ -209,10 +208,6 @@ export default function OnePagePlusDocument({
               <View style={styles.socialRow}>{socialLine}</View>
             )}
           </View>
-          {/* Profile Image */}
-          {data.basics.image && (
-            <Image style={styles.profileImage} src={data.basics.image} />
-          )}
         </View>
 
         {/* SUMMARY */}

@@ -15,3 +15,16 @@ export const formatYearMonth = (dateString: string): string => {
   const date = new Date(Number(year), Number(month) - 1, 1)
   return format(date, 'MMM yyyy') // e.g., "Jan 2021"
 }
+
+// Helper function to convert image URL to base64 data URL
+export async function getBase64FromUrl(url: string): Promise<string> {
+  const response = await fetch(url, { mode: 'cors' })
+  console.log('22', response)
+  const blob = await response.blob()
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result as string)
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}

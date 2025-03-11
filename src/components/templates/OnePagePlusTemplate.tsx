@@ -10,7 +10,7 @@ type ResumeProps = {
 
 const OnePagePlusTemplate: React.FC<ResumeProps> = ({ data, disableLinks }) => {
   return (
-    <div className="bg-white text-gray-800 min-h-[297mm] w-full p-8 font-sans">
+    <div className="bg-white text-gray-800 min-h-[297mm] w-full p-8 pb-0 font-sans">
       {/* Header */}
       <header className="mb-3 flex flex-row justify-between">
         <div className="flex flex-col items-start">

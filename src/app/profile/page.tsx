@@ -185,7 +185,7 @@ const Profile: React.FC = () => {
   // }
 
   if (loading) return <Spinner />
-
+  console.log('user', user)
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="container mx-auto px-4 py-8">

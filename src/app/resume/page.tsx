@@ -26,6 +26,9 @@ import { Spinner } from '@/src/components/ui'
 import { useSearchParams } from 'next/navigation'
 import { PDFDownloadLink } from '@react-pdf/renderer'
 import OnePagePlusDocument from '@/src/components/Resume/OnePagePlusDocument'
+import { getBase64FromUrl } from '@/src/lib/utils'
+import { ref, getDownloadURL } from 'firebase/storage'
+import { storage } from '@/src/lib/firebase'
 
 export default function Resume() {
   const user = useAuthUser()
